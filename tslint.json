@@ -1,0 +1,76 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended"],
+  "jsRules": {
+    "no-unused-expression": true
+  },
+  "rules": {
+    "eofline": true,
+    "quotemark": [true, "single"],
+    "indent": [true, "spaces"],
+    "member-access": [false],
+    "ordered-imports": [false],
+    "max-line-length": [true, 140],
+    "member-ordering": [
+      true,
+      {
+        "order": [
+          "static-field",
+          "instance-field",
+          "static-method",
+          "instance-method"
+        ]
+      }
+    ],
+    "curly": true,
+    "interface-name": [false],
+    "array-type": [false],
+    "no-empty-interface": true,
+    "no-empty": false,
+    "arrow-parens": false,
+    "object-literal-sort-keys": true,
+    "no-unused-expression": true,
+    "max-classes-per-file": [false],
+    "variable-name": [false],
+    "one-line": [
+      true,
+      "check-open-brace",
+      "check-catch",
+      "check-else",
+      "check-whitespace"
+    ],
+    "one-variable-per-declaration": [false],
+    "import-blacklist": [true, "rxjs/Rx"],
+    "import-spacing": true,
+    "comment-format": [true, "check-space"],
+    "interface-over-type-literal": true,
+    "label-position": true,
+    "no-duplicate-super": true,
+    "no-shadowed-variable": true,
+    "no-string-throw": true,
+    "no-switch-case-fall-through": true,
+    "no-trailing-whitespace": true,
+    "no-unnecessary-initializer": true,
+    "no-use-before-declare": true,
+    "no-var-keyword": true,
+    "prefer-const": true,
+    "radix": true,
+    "semicolon": [true, "always"],
+    "triple-equals": [true, "allow-null-check"],
+    "trailing-comma": [
+      true,
+      {
+        "multiline": {
+          "objects": "always",
+          "arrays": "always",
+          "functions": "never",
+          "typeLiterals": "ignore"
+        },
+        "esSpecCompliant": true
+      }
+    ],
+    "no-consecutive-blank-lines": true,
+    "no-unused-variable": true
+  },
+  "rulesDirectory": []
+}
