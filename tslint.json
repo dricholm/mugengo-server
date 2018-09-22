@@ -69,8 +69,7 @@
         "esSpecCompliant": true
       }
     ],
-    "no-consecutive-blank-lines": true,
-    "no-unused-variable": true
+    "no-consecutive-blank-lines": true
   },
   "rulesDirectory": []
 }
