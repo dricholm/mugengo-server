@@ -4,29 +4,65 @@ import * as fs from 'fs';
 import * as Joi from 'joi';
 
 interface EnvConfig {
-  [key: string]: any;
+  NODE_ENV: string;
+  PORT: number;
+
+  JWT_SECRET: string;
+  JWT_EXPIRY: number;
+  CRYPTO_SECRET: string;
+
+  TYPEORM_CONNECTION: string;
+  TYPEORM_HOST: string;
+  TYPEORM_USERNAME: string;
+  TYPEORM_PASSWORD: string;
+  TYPEORM_DATABASE: string;
+  TYPEORM_PORT: number;
+  TYPEORM_SYNCHRONIZE: boolean;
+  TYPEORM_ENTITIES: string;
+  TYPEORM_MIGRATIONS: string;
+  TYPEORM_LOGGING: boolean;
 }
 
 @Injectable()
 export class ConfigService {
   private readonly envConfig: EnvConfig;
 
-  get config(): any {
+  get config(): EnvConfig {
     return this.envConfig;
   }
 
-  constructor(filePath: string) {
-    this.envConfig = this.validateInput(
-      dotenv.parse(fs.readFileSync(filePath))
-    );
+  constructor() {
+    let parsedEnv: EnvConfig = dotenv.parse(fs.readFileSync('.env'));
 
-    Object.keys(this.envConfig).forEach((key: string) => {
-      process.env[key] = this.envConfig[key];
+    if (process.env.NODE_ENV === 'test' && fs.existsSync('.env.test')) {
+      const testEnv: Partial<EnvConfig> = dotenv.parse(
+        fs.readFileSync('.env.test')
+      );
+      parsedEnv = { ...parsedEnv, ...testEnv };
+    }
+
+    const validatedConfig: EnvConfig = this.validateInput(parsedEnv);
+
+    Object.keys(validatedConfig).forEach((key: string) => {
+      if (process.env.hasOwnProperty(key)) {
+        validatedConfig[key] = process.env[key];
+      } else {
+        process.env[key] = validatedConfig[key];
+      }
     });
+
+    // TODO: Logger: Starting in NODE_ENV environment
+
+    this.envConfig = validatedConfig;
   }
 
   private validateInput(envConfig: EnvConfig): EnvConfig {
     const envVarsSchema: Joi.ObjectSchema = Joi.object({
+      CRYPTO_SECRET: Joi.string().length(32),
+      JWT_EXPIRY: Joi.number()
+        .empty('')
+        .default(7200),
+      JWT_SECRET: Joi.string(),
       NODE_ENV: Joi.string()
         .valid(['development', 'production', 'test'])
         .empty('')
