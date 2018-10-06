@@ -6,6 +6,7 @@ import * as Joi from 'joi';
 interface EnvConfig {
   NODE_ENV: string;
   PORT: number;
+  CORS_ORIGIN: string;
 
   JWT_SECRET: string;
   JWT_EXPIRY: number;
@@ -58,6 +59,9 @@ export class ConfigService {
 
   private validateInput(envConfig: EnvConfig): EnvConfig {
     const envVarsSchema: Joi.ObjectSchema = Joi.object({
+      CORS_ORIGIN: Joi.string()
+        .empty('')
+        .default('*'),
       CRYPTO_SECRET: Joi.string().length(32),
       JWT_EXPIRY: Joi.number()
         .empty('')
