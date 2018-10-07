@@ -50,7 +50,6 @@ export class AuthService {
 
     const accessToken = await this.generateAccessToken({
       email: user.email,
-      id: user.id,
     });
 
     return {
@@ -78,7 +77,6 @@ export class AuthService {
 
     const accessToken = await this.generateAccessToken({
       email: token.user.email,
-      id: token.user.id,
     });
 
     return {

@@ -22,7 +22,7 @@ export class TestUtilities {
   }
 
   static generateAccessToken(user: UserEntity): string {
-    const payload: JwtPayload = { email: user.email, id: user.id };
+    const payload: JwtPayload = { email: user.email };
     return jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRY,
     });
