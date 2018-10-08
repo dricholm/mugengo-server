@@ -52,8 +52,6 @@ export class ConfigService {
       }
     });
 
-    // TODO: Logger: Starting in NODE_ENV environment
-
     this.envConfig = validatedConfig;
   }
 
@@ -83,7 +81,7 @@ export class ConfigService {
         .default('mugengo'),
       TYPEORM_ENTITIES: Joi.string()
         .empty('')
-        .default('src/**/**.entity.ts'),
+        .default('src/entities/**.entity.ts'),
       TYPEORM_HOST: Joi.string()
         .empty('')
         .default('localhost'),
@@ -92,7 +90,7 @@ export class ConfigService {
         .default(false),
       TYPEORM_MIGRATIONS: Joi.string()
         .empty('')
-        .default('src/**/**.migration.ts'),
+        .default('src/migrations/**.migration.ts'),
       TYPEORM_PASSWORD: Joi.string().allow(''),
       TYPEORM_PORT: Joi.number()
         .integer()
@@ -100,7 +98,7 @@ export class ConfigService {
         .default(5432),
       TYPEORM_SYNCHRONIZE: Joi.boolean()
         .empty('')
-        .default(true),
+        .default(false),
       TYPEORM_USERNAME: Joi.string()
         .empty('')
         .default('root'),
