@@ -1,5 +1,7 @@
 # Mugengo Server
 
+[![Build Status](https://travis-ci.com/dricholm/mugengo-server.svg?branch=master)](https://travis-ci.com/dricholm/mugengo-server)
+
 A webapp for learning new languages by talking to people from all over the world. Backend part built using [NestJS](https://nestjs.com/). The [frontend](https://github.com/dricholm/mugengo-ui) repo can also be found on GitHub.
 
 > Note: Under development, not yet released
@@ -9,7 +11,6 @@ A webapp for learning new languages by talking to people from all over the world
 ### Installation
 
 Install the dependencies using `npm install`. Make a copy of `.env.example` as `.env` and fill in the environment values. The server needs a PostgreSQL server running.
-
 
 ### Running the server
 
