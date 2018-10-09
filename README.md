@@ -1,6 +1,7 @@
 # Mugengo Server
 
 [![Build Status](https://travis-ci.com/dricholm/mugengo-server.svg?branch=master)](https://travis-ci.com/dricholm/mugengo-server)
+[![Coverage Status](https://coveralls.io/repos/github/dricholm/mugengo-server/badge.svg?branch=master)](https://coveralls.io/github/dricholm/mugengo-server?branch=master)
 
 A webapp for learning new languages by talking to people from all over the world. Backend part built using [NestJS](https://nestjs.com/). The [frontend](https://github.com/dricholm/mugengo-ui) repo can also be found on GitHub.
 
@@ -15,10 +16,6 @@ Install the dependencies using `npm install`. Make a copy of `.env.example` as `
 ### Running the server
 
 ```bash
-# Development
-$ npm run start
-
-# Watch mode
 $ npm run start:dev
 ```
 
@@ -26,11 +23,11 @@ $ npm run start:dev
 
 ```bash
 # Unit tests
-$ npm run test
+$ npm test
 
 # E2E tests
-$ npm run test:e2e
+$ npm run e2e
 
 # Test coverage
-$ npm run test:cov
+$ npm run coverage
 ```
