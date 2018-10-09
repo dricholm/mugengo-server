@@ -18,7 +18,7 @@
     "e2e": "jest --config ./test/jest-e2e.config.js",
     "coverage": "jest --coverage",
     "webpack": "webpack --config webpack.config.js",
-    "ci": "npm run lint && npm run coverage && npm run test:e2e"
+    "ci": "npm run lint && npm run coverage && npm run e2e"
   },
   "dependencies": {
     "@nestjs/common": "^5.1.0",
