@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { config as dotEnvConfig } from 'dotenv';
 
 import { AuthService } from '@/auth/auth.service';
 import { JwtStrategy } from '@/auth/jwt.strategy';
 import { AuthController } from '@/auth/auth.controller';
 import { SharedModule } from '@/shared/shared.module';
+
+dotEnvConfig();
 
 @Module({
   controllers: [AuthController],
