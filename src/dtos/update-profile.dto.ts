@@ -1,4 +1,10 @@
-import { IsString, IsNotEmpty, IsNumber, Min, Max } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsInt,
+  IsPositive,
+  IsOptional,
+} from 'class-validator';
 
 export class UpdateProfileDto {
   @IsString()
@@ -8,8 +14,8 @@ export class UpdateProfileDto {
   @IsString()
   readonly country: string;
 
-  @IsNumber()
-  @Min(1)
-  @Max(150)
+  @IsInt()
+  @IsPositive()
+  @IsOptional()
   readonly age: number;
 }

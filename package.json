@@ -16,7 +16,7 @@
     "test": "jest -i",
     "test:watch": "jest -i --watch",
     "e2e": "jest -i --config ./test/jest-e2e.config.js",
-    "coverage": "jest --coverage",
+    "coverage": "jest -i --coverage",
     "webpack": "webpack --config webpack.config.js",
     "ci": "npm run lint && npm run coverage && npm run e2e"
   },
