@@ -6,15 +6,13 @@ import { OAuthDto } from '@/dtos';
 import { UserEntity, RefreshTokenEntity } from '@/entities';
 import { JwtPayload } from '@/auth/jwt-payload.interface';
 import { CryptoService } from '@/shared/services/crypto.service';
-import { ConfigService } from '@/shared/services/config.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly entityManager: EntityManager,
-    private readonly cryptoService: CryptoService,
-    private readonly configService: ConfigService
+    private readonly cryptoService: CryptoService
   ) {}
 
   async createUser(email: string, name: string, password: string) {
@@ -54,7 +52,7 @@ export class AuthService {
 
     return {
       access_token: accessToken,
-      expires_in: this.configService.config.JWT_EXPIRY,
+      expires_in: +process.env.JWT_EXPIRY,
       refresh_token: this.cryptoService.encrypt(refreshToken.token),
       token_type: 'bearer',
     };
@@ -81,7 +79,7 @@ export class AuthService {
 
     return {
       access_token: accessToken,
-      expires_in: this.configService.config.JWT_EXPIRY,
+      expires_in: +process.env.JWT_EXPIRY,
       refresh_token: refreshToken,
       token_type: 'bearer',
     };

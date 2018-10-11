@@ -6,7 +6,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { OAuthDto } from '@/dtos';
 import { UserEntity, TokenEntity, RefreshTokenEntity } from '@/entities';
 import { AuthService } from '@/auth/auth.service';
-import { ConfigService } from '@/shared/services/config.service';
 import { CryptoService } from '@/shared/services/crypto.service';
 
 describe('AuthService', () => {
@@ -14,26 +13,24 @@ describe('AuthService', () => {
   let connection: Connection;
   let entityManager: EntityManager;
   let cryptoService: CryptoService;
-  let configService: ConfigService;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         TypeOrmModule.forRoot(),
         JwtModule.register({
-          secretOrPrivateKey: 'secret',
+          secretOrPrivateKey: process.env.JWT_SECRET,
           signOptions: {
-            expiresIn: 3600,
+            expiresIn: +process.env.JWT_EXPIRY,
           },
         }),
       ],
-      providers: [AuthService, ConfigService, CryptoService],
+      providers: [AuthService, CryptoService],
     }).compile();
     service = module.get<AuthService>(AuthService);
     connection = module.get<Connection>(Connection);
     entityManager = module.get<EntityManager>(EntityManager);
     cryptoService = module.get<CryptoService>(CryptoService);
-    configService = module.get<ConfigService>(ConfigService);
     await connection.synchronize(true);
   });
 
@@ -41,6 +38,10 @@ describe('AuthService', () => {
     jest.clearAllMocks();
     await entityManager.delete(UserEntity, {});
     await entityManager.delete(TokenEntity, {});
+  });
+
+  afterAll(async () => {
+    await connection.close();
   });
 
   it('should create user', async () => {
@@ -91,7 +92,7 @@ describe('AuthService', () => {
 
     expect(result).toBeTruthy();
     expect(result.access_token).toBeTruthy();
-    expect(result.expires_in).toBe(configService.config.JWT_EXPIRY);
+    expect(result.expires_in).toBe(+process.env.JWT_EXPIRY);
     expect(result.refresh_token).toBeTruthy();
     expect(result.token_type).toBe('bearer');
     const tokenCheck: RefreshTokenEntity = await entityManager.findOne(
@@ -118,7 +119,7 @@ describe('AuthService', () => {
     const result = await service.getTokenFromRefreshToken('encryptedToken');
     expect(result).toBeTruthy();
     expect(result.access_token).toBeTruthy();
-    expect(result.expires_in).toBe(configService.config.JWT_EXPIRY);
+    expect(result.expires_in).toBe(+process.env.JWT_EXPIRY);
     expect(result.refresh_token).toBe('encryptedToken');
     expect(result.token_type).toBe('bearer');
     const tokenCheck: RefreshTokenEntity = await entityManager.findOne(

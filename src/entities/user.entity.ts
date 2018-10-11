@@ -26,20 +26,11 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @Column({ default: false })
-  public: boolean;
-
   @Column({ nullable: true })
-  location: string;
+  country: string;
 
   @Column({ nullable: true })
   age: number;
-
-  @Column({ nullable: true })
-  gender: number;
-
-  @Column({ type: 'text', nullable: true })
-  about: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: number;

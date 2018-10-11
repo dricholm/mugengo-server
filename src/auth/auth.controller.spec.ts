@@ -1,4 +1,4 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { Connection, EntityManager } from 'typeorm';
@@ -8,32 +8,31 @@ import { UserEntity, TokenEntity, RefreshTokenEntity } from '@/entities';
 import { AuthController } from '@/auth/auth.controller';
 import { AuthService } from '@/auth/auth.service';
 import { SharedModule } from '@/shared/shared.module';
-import { ConfigService } from '@/shared/services/config.service';
 import { TestUtilities } from '@/utilities/test-utilities';
+import { PassportModule } from '@nestjs/passport';
 
 describe('Auth Controller', () => {
   let controller: AuthController;
   let connection: Connection;
   let entityManager: EntityManager;
-  let configService: ConfigService;
 
   beforeAll(async () => {
-    const module = await Test.createTestingModule({
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
       imports: [
         TypeOrmModule.forRoot(),
         JwtModule.register({
           secretOrPrivateKey: process.env.JWT_SECRET,
           signOptions: {
-            expiresIn: process.env.JWT_EXPIRY,
+            expiresIn: +process.env.JWT_EXPIRY,
           },
         }),
+        PassportModule.register({ defaultStrategy: 'jwt' }),
         SharedModule,
       ],
       providers: [AuthService],
     }).compile();
     controller = module.get<AuthController>(AuthController);
-    configService = module.get<ConfigService>(ConfigService);
     connection = module.get<Connection>(Connection);
     entityManager = module.get<EntityManager>(EntityManager);
     await connection.synchronize(true);
@@ -43,6 +42,10 @@ describe('Auth Controller', () => {
     jest.resetAllMocks();
     await entityManager.delete(UserEntity, {});
     await entityManager.delete(TokenEntity, {});
+  });
+
+  afterAll(async () => {
+    await connection.close();
   });
 
   it('should create user', async () => {
@@ -70,7 +73,7 @@ describe('Auth Controller', () => {
     });
 
     expect(result.access_token).toBeTruthy();
-    expect(result.expires_in).toBe(configService.config.JWT_EXPIRY);
+    expect(result.expires_in).toBe(+process.env.JWT_EXPIRY);
     expect(result.refresh_token).toBeTruthy();
     expect(result.token_type).toBe('bearer');
 
@@ -101,7 +104,7 @@ describe('Auth Controller', () => {
     });
 
     expect(result.access_token).toBeTruthy();
-    expect(result.expires_in).toBe(configService.config.JWT_EXPIRY);
+    expect(result.expires_in).toBe(+process.env.JWT_EXPIRY);
     expect(result.refresh_token).toBe(encryptedToken);
     expect(result.token_type).toBe('bearer');
   });
