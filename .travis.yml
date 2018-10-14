@@ -9,6 +9,13 @@ services:
 
 addons:
   postgresql: '10'
+  apt:
+    packages:
+      - postgresql-10
+      - postgresql-client-10
+env:
+  global:
+    - PGPORT=5433
 
 branches:
   only:
