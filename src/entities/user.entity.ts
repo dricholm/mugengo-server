@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { TokenEntity } from '@/entities/token.entity';
+import { TokenEntity, UserLanguagesEntity } from '@/entities';
 
 @Entity('users')
 export class UserEntity {
@@ -16,6 +16,9 @@ export class UserEntity {
 
   @OneToMany(type => TokenEntity, token => token.user)
   tokens: TokenEntity[];
+
+  @OneToMany(type => UserLanguagesEntity, userLanguage => userLanguage.user)
+  languages: UserLanguagesEntity[];
 
   @Column({ length: 100, unique: true })
   email: string;
@@ -26,20 +29,11 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @Column({ default: false })
-  public: boolean;
-
-  @Column({ nullable: true })
-  location: string;
+  @Column({ length: 2, nullable: true })
+  country: string;
 
   @Column({ nullable: true })
   age: number;
-
-  @Column({ nullable: true })
-  gender: number;
-
-  @Column({ type: 'text', nullable: true })
-  about: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: number;

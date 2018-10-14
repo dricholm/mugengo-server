@@ -12,6 +12,8 @@ export class TestUtilities {
     userData: Partial<UserEntity>
   ): Promise<UserEntity> {
     const user: UserEntity = entityManager.create(UserEntity, {
+      age: faker.random.number({ min: 20, max: 99}),
+      country: faker.address.countryCode(),
       email: faker.internet.email(null, null, 'mugengo.com'),
       name: faker.name.findName(),
       password: faker.internet.password(),

@@ -1,11 +1,11 @@
-import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsInt } from 'class-validator';
 
 export class OAuthDto {
   @IsString()
   @IsNotEmpty()
   readonly access_token: string;
 
-  @IsNumber()
+  @IsInt()
   @IsNotEmpty()
   readonly expires_in: number;
 

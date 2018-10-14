@@ -1,23 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { CryptoService } from '@/shared/services/crypto.service';
-import { ConfigService } from '@/shared/services/config.service';
-
-const mockConfig = {
-  config: {
-    CRYPTO_SECRET: '12345678901234567890123456789012',
-  },
-};
 
 describe('CryptoService', () => {
   let service: CryptoService;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        CryptoService,
-        { provide: ConfigService, useValue: mockConfig },
-      ],
+      providers: [CryptoService],
     }).compile();
     service = module.get<CryptoService>(CryptoService);
   });

@@ -40,6 +40,7 @@ describe('AuthController (e2e)', () => {
 
   afterAll(async () => {
     await connection.synchronize(true);
+    await connection.close();
     await app.close();
   });
 
