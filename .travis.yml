@@ -7,6 +7,9 @@ node_js:
 services:
   - postgresql
 
+addons:
+  postgresql: '10'
+
 branches:
   only:
     - master
