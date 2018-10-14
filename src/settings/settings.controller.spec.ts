@@ -4,7 +4,7 @@ import { Connection, EntityManager } from 'typeorm';
 import { PassportModule } from '@nestjs/passport';
 
 import { SettingsController } from './settings.controller';
-import { UserEntity } from '@/entities';
+import { UserEntity, UserLanguagesEntity } from '@/entities';
 import { TestUtilities } from '@/utilities/test-utilities';
 import { SettingsService } from './settings.service';
 
@@ -39,13 +39,24 @@ describe('Settings Controller', () => {
 
   it('should return profile', async () => {
     const user: UserEntity = await TestUtilities.createUser(entityManager, {});
+    const language: UserLanguagesEntity = entityManager.create(
+      UserLanguagesEntity,
+      {
+        code: 'tst',
+        level: 1,
+        user,
+      }
+    );
+    await entityManager.save(language);
 
     const result = await controller.getProfile(user);
 
-    expect(result).toBeDefined();
-    expect(result.age).toBe(user.age);
-    expect(result.country).toBe(user.country);
-    expect(result.name).toBe(user.name);
+    expect(result).toEqual({
+      age: user.age,
+      country: user.country,
+      languages: [{ code: 'tst', level: 1 }],
+      name: user.name,
+    });
   });
 
   it('should be successful at profile update', async () => {
@@ -53,7 +64,8 @@ describe('Settings Controller', () => {
 
     await controller.updateProfile(user, {
       age: 23,
-      country: 'test',
+      country: 'ct',
+      languages: [{ code: 'tst', level: 3 }],
       name: 'new',
     });
   });

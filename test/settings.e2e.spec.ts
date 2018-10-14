@@ -53,7 +53,12 @@ describe('SettingsController (e2e)', () => {
     await request(app.getHttpServer())
       .patch('/settings/profile')
       .set('Authorization', `Bearer ${accessToken}`)
-      .send({ age: 23, country: 'test', name: 'New name' })
+      .send({
+        age: 23,
+        country: 'ts',
+        languages: [{ code: 'tst', level: 2 }],
+        name: 'New name',
+      })
       .expect(200);
   });
 
@@ -63,8 +68,11 @@ describe('SettingsController (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .expect(200);
 
-    expect(result.body.age).toBe(23);
-    expect(result.body.country).toBe('test');
-    expect(result.body.name).toBe('New name');
+    expect(result.body).toEqual({
+      age: 23,
+      country: 'ts',
+      languages: [{ code: 'tst', level: 2 }],
+      name: 'New name',
+    });
   });
 });

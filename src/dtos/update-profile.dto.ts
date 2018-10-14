@@ -4,6 +4,7 @@ import {
   IsInt,
   IsPositive,
   IsOptional,
+  IsArray,
 } from 'class-validator';
 
 export class UpdateProfileDto {
@@ -18,4 +19,7 @@ export class UpdateProfileDto {
   @IsPositive()
   @IsOptional()
   readonly age: number;
+
+  @IsArray()
+  readonly languages: Array<{ code: string; level: number }>;
 }
