@@ -13,6 +13,7 @@ export class UpdateProfileDto {
   readonly name: string;
 
   @IsString()
+  @IsOptional()
   readonly country: string;
 
   @IsInt()
